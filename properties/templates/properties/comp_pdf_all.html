@@ -1,0 +1,17 @@
+
+
+{% block content %}
+{% with pdf_mode=True %}
+
+{% for item in comps %}
+<div class="page">
+    {% include "properties/comp_pdf.html" with comp=item.form property=item.property images=item.images %}
+</div>
+
+{% if not forloop.last %}
+<div style="page-break-after: always;"></div>
+{% endif %}
+{% endfor %}
+
+{% endwith %}
+{% endblock %}

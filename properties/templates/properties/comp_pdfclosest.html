@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        margin: 30px;
+        color: #333;
+    }
+
+    h1 {
+        text-align: center;
+        font-size: 20px;
+        margin-bottom: 4px;
+        font-weight: 700;
+        color: #003366;
+    }
+
+    h2 {
+        text-align: center;
+        font-size: 14px;
+        margin-bottom: 4px;
+        color: #444;
+    }
+
+    .location-line {
+        text-align: center;
+        font-size: 13px;
+        margin-bottom: 18px;
+        color: #333;
+    }
+
+    .section-title {
+        font-size: 12px;
+        font-weight: bold;
+        color: #003366;
+        margin-bottom: 6px;
+        text-transform: uppercase;
+        border-bottom: 1px solid #003366;
+        padding-bottom: 3px;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 12px;
+    }
+
+    /* BLUE HEADER — NOW EXACTLY 80px */
+    .blue {
+        background: #e6eef7;
+        width: 80px;          /* <<< NEW WIDTH (20px less) */
+        min-width: 80px;
+        max-width: 80px;
+        padding: 4px 6px;
+        font-size: 11px;
+        color: #003366;
+        border: 1px solid #c5d3e0;
+        white-space: nowrap;
+    }
+
+    /* WHITE DATA CELL */
+    .value {
+        padding: 6px 8px;
+        font-size: 12px;
+        border: 1px solid #dcdcdc;
+        width: auto;
+    }
+
+    .comments-box {
+        border: 1px solid #ccc;
+        background: #f4f7fb;
+        padding: 8px;
+        font-size: 12px;
+        min-height: 50px;
+        line-height: 1.35;
+    }
+</style>
+</head>
+<body>
+
+<h1>Comparable Sale Report</h1>
+<h2>Comp {{ comp.comp_number }}</h2>
+<div class="location-line">{{ comp.location }}</div>
+
+<!-- PROPERTY IDENTIFICATION -->
+<div class="section-title">Property Identification</div>
+<table>
+    <tr><td class="blue">Location</td><td class="value">{{ comp.location }}</td></tr>
+    <tr><td class="blue">County</td><td class="value">{{ comp.county }}</td></tr>
+    <tr><td class="blue">Access</td><td class="value">{{ comp.access }}</td></tr>
+    <tr><td class="blue">Size (Acres)</td><td class="value">{{ comp.size }}</td></tr>
+</table>
+
+<!-- SITE DATA -->
+<div class="section-title">Site Data</div>
+<table>
+    <tr><td class="blue">SQFT</td><td class="value">{{ comp.sqft }}</td></tr>
+    <tr><td class="blue">Utilities</td><td class="value">{{ comp.utilities }}</td></tr>
+    <tr><td class="blue">Water</td><td class="value">{{ comp.water }}</td></tr>
+    <tr><td class="blue">Improvements</td><td class="value">{{ comp.improvements }}</td></tr>
+</table>
+
+<!-- SITE CHARACTERISTICS -->
+<div class="section-title">Site Characteristics</div>
+<table>
+    <tr><td class="blue">Eco</td><td class="value">{{ comp.eco }}</td></tr>
+    <tr><td class="blue">Terrain</td><td class="value">{{ comp.terrain }}</td></tr>
+    <tr><td class="blue">Restrictions</td><td class="value">{{ comp.restrictions }}</td></tr>
+</table>
+
+<!-- SALES DATA -->
+<div class="section-title">Sales Data</div>
+<table>
+    <tr><td class="blue">Price</td><td class="value">{{ comp.price }}</td></tr>
+    <tr><td class="blue">Sale Date</td><td class="value">{{ comp.sale_date }}</td></tr>
+    <tr><td class="blue">Price Per Acre</td><td class="value">{{ comp.price_per_acre }}</td></tr>
+    <tr><td class="blue">Grantor</td><td class="value">{{ comp.grantor }}</td></tr>
+    <tr><td class="blue">Grantee</td><td class="value">{{ comp.grantee }}</td></tr>
+    <tr><td class="blue">Document No.</td><td class="value">{{ comp.document_no }}</td></tr>
+    <tr><td class="blue">Terms</td><td class="value">{{ comp.terms }}</td></tr>
+    <tr><td class="blue">Listing</td><td class="value">{{ comp.listing }}</td></tr>
+    <tr><td class="blue">Broker</td><td class="value">{{ comp.broker }}</td></tr>
+</table>
+
+<!-- VERIFICATION -->
+<div class="section-title">Verification</div>
+<table>
+    <tr><td class="blue">Verified To</td><td class="value">{{ comp.verified_to }}</td></tr>
+    <tr><td class="blue">Verified By</td><td class="value">{{ comp.verified_by }}</td></tr>
+    <tr><td class="blue">Verified Date</td><td class="value">{{ comp.verified_date }}</td></tr>
+    <tr><td class="blue">Inspected By</td><td class="value">{{ comp.inspected_by }}</td></tr>
+    <tr><td class="blue">Inspected Date</td><td class="value">{{ comp.inspected_date }}</td></tr>
+    <tr><td class="blue">Appraiser Name</td><td class="value">{{ comp.appraiser_name }}</td></tr>
+</table>
+
+<!-- COMMENTS -->
+<div class="section-title">Comments</div>
+<div class="comments-box">
+    {{ comp.comments }}
+</div>
+
+</body>
+</html>

@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Preview All Selected Comparable Sales</h2>
+
+<style>
+    body { font-family: Arial, sans-serif; margin: 25px; background: #fafafa; }
+    .card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+    h2 { margin-top: 0; }
+    table { width: 100%; border-collapse: collapse; }
+    td { padding: 6px; border-bottom: 1px solid #eee; }
+    .btn {
+        padding: 10px 16px;
+        background: #0078ff;
+        color: white;
+        border-radius: 6px;
+        text-decoration: none;
+    }
+</style>
+
+{% for item in comps %}
+<div class="card">
+    <h3>Comp {{ forloop.counter }} — ID {{ item.property.id }}</h3>
+
+    <table>
+        {% for key, value in item.form.items %}
+        <tr>
+            <td><strong>{{ key|title }}</strong></td>
+            <td>{{ value }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <a href="/comp/{{ item.property.id }}/pdf/" class="btn">Generate PDF</a>
+</div>
+{% endfor %}
+
+{% endblock %}

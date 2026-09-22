@@ -1,0 +1,262 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Comparable Sale Edit Form</h2>
+
+<style>
+    body { font-family: Arial, sans-serif; margin: 25px; background: #fafafa; }
+
+    .card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+
+    h2 { margin-top: 0; }
+
+    .grid-2 {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 15px 20px;
+    }
+
+    .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px 20px;
+    }
+
+    .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px 20px;
+    }
+
+    label {
+        font-size: 13px;
+        color: #555;
+        margin-bottom: 4px;
+        display: block;
+    }
+
+    input, textarea {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    textarea {
+        height: 120px;
+    }
+
+    .btn-row {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-print { background: #0078ff; }
+    .btn-close { background: #555; }
+    .btn-nav { background: #6c757d; }
+</style>
+
+<form method="post">
+    {% csrf_token %}
+
+    <div class="card">
+        <h3>Comp {{ comp.comp_number }} of {{ total_comps }}</h3>
+
+        <label>Comp Number</label>
+        <input type="number" name="comp_number" value="{{ comp.comp_number }}">
+    </div>
+
+    <div class="card">
+        <h3>Property Identification</h3>
+        <div class="grid-3">
+            <div>
+                <label>Location</label>
+                <input type="text" name="location" value="{{ comp.location }}">
+            </div>
+            <div>
+                <label>County</label>
+                <input type="text" name="county" value="{{ comp.county }}">
+            </div>
+            <div>
+                <label>Access</label>
+                <input type="text" name="access" value="{{ comp.access }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Site Data</h3>
+        <div class="grid-4">
+            <div>
+                <label>Size (Acres)</label>
+                <input type="text" name="size" value="{{ comp.size }}">
+            </div>
+            <div>
+                <label>SQFT</label>
+                <input type="text" name="sqft" value="{{ comp.sqft }}">
+            </div>
+            <div>
+                <label>Utilities</label>
+                <input type="text" name="utilities" value="{{ comp.utilities }}">
+            </div>
+            <div>
+                <label>Water</label>
+                <input type="text" name="water" value="{{ comp.water }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Site Characteristics</h3>
+        <div class="grid-4">
+            <div>
+                <label>Improvements</label>
+                <input type="text" name="improvements" value="{{ comp.improvements }}">
+            </div>
+            <div>
+                <label>Eco</label>
+                <input type="text" name="eco" value="{{ comp.eco }}">
+            </div>
+            <div>
+                <label>Terrain</label>
+                <input type="text" name="terrain" value="{{ comp.terrain }}">
+            </div>
+            <div>
+                <label>Restrictions</label>
+                <input type="text" name="restrictions" value="{{ comp.restrictions }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Sales Data</h3>
+        <div class="grid-4">
+            <div>
+                <label>Price</label>
+                <input type="text" name="price" value="{{ comp.price }}">
+            </div>
+            <div>
+                <label>Sale Date</label>
+                <input type="date" name="sale_date" value="{{ comp.sale_date }}">
+            </div>
+            <div>
+                <label>Price Per Acre</label>
+                <input type="text" name="price_per_acre" value="{{ comp.price_per_acre }}" readonly>
+            </div>
+            <div>
+                <label>Grantor</label>
+                <input type="text" name="grantor" value="{{ comp.grantor }}">
+            </div>
+            <div>
+                <label>Grantee</label>
+                <input type="text" name="grantee" value="{{ comp.grantee }}">
+            </div>
+            <div>
+                <label>Document No.</label>
+                <input type="text" name="document_no" value="{{ comp.document_no }}">
+            </div>
+            <div>
+                <label>Terms</label>
+                <input type="text" name="terms" value="{{ comp.terms }}">
+            </div>
+            <div>
+                <label>Listing</label>
+                <input type="text" name="listing" value="{{ comp.listing }}">
+            </div>
+            <div>
+                <label>Broker</label>
+                <input type="text" name="broker" value="{{ comp.broker }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Legal / Verification</h3>
+        <div class="grid-3">
+            <div>
+                <label>Verified To</label>
+                <input type="text" name="verified_to" value="{{ comp.verified_to }}">
+            </div>
+            <div>
+                <label>Verified By</label>
+                <input type="text" name="verified_by" value="{{ comp.verified_by }}">
+            </div>
+            <div>
+                <label>Verified Date</label>
+                <input type="date" name="verified_date" value="{{ comp.verified_date }}">
+            </div>
+            <div>
+                <label>Inspected By</label>
+                <input type="text" name="inspected_by" value="{{ comp.inspected_by }}">
+            </div>
+            <div>
+                <label>Inspected Date</label>
+                <input type="date" name="inspected_date" value="{{ comp.inspected_date }}">
+            </div>
+            <div>
+                <label>Appraiser Name</label>
+                <input type="text" name="appraiser_name" value="{{ comp.appraiser_name }}">
+            </div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>Comments</h3>
+        <textarea name="comments">{{ comp.comments }}</textarea>
+    </div>
+
+    <div class="btn-row">
+
+        <button type="submit" class="btn btn-print">Update Working Copy</button>
+
+        {% if prev_id %}
+            <a href="/comp/{{ prev_id }}/" class="btn btn-nav">← Previous Comp</a>
+        {% endif %}
+
+        {% if next_id %}
+            <a href="/comp/{{ next_id }}/" class="btn btn-nav">Next Comp →</a>
+        {% endif %}
+
+        <a href="/?{% for sid in selected_ids %}selected_ids={{ sid }}&{% endfor %}"
+           class="btn btn-close">Back to Search</a>
+
+        <a href="/comp/{{ property.id }}/pdf/" target="_blank"
+           class="btn btn-print" style="background:#28a745;">
+            Generate PDF
+        </a>
+
+        <a href="/comp/pdf/all/" target="_blank"
+           class="btn btn-print" style="background:#20c997;">
+            Generate PDF (All Comps)
+        </a>
+
+        <a href="/comp/preview/" class="btn btn-print" style="background:#17a2b8;">
+            Preview All Comps
+        </a>
+
+    </div>
+
+</form>
+
+{% endblock %}

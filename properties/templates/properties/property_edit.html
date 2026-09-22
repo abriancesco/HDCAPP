@@ -1,0 +1,298 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>{% if is_new %}New Property{% else %}Edit Property{% endif %}</h2>
+
+{% if request.GET.saved %}
+<div style="background:#d4edda; padding:12px; border:1px solid #c3e6cb;
+            border-radius:6px; margin-bottom:20px; color:#155724;">
+    ✔ Property saved successfully
+</div>
+{% endif %}
+
+<style>
+    body { font-family: Arial, sans-serif; margin: 25px; background: #fafafa; }
+
+    .card {
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        border: 1px solid #ddd;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        margin-bottom: 25px;
+    }
+
+    h2 { margin-top: 0; }
+
+    .grid-3 {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 15px 20px;
+    }
+
+    .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px 20px;
+    }
+
+    label {
+        font-size: 13px;
+        color: #555;
+        margin-bottom: 4px;
+        display: block;
+    }
+
+    input, textarea, select {
+        width: 100%;
+        padding: 8px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        font-size: 14px;
+    }
+
+    textarea {
+        height: 120px;
+    }
+
+    .btn-row {
+        display: flex;
+        justify-content: flex-start;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn {
+        padding: 10px 16px;
+        border-radius: 6px;
+        border: none;
+        cursor: pointer;
+        font-size: 14px;
+        color: white;
+        text-decoration: none;
+    }
+
+    .btn-save { background: #28a745; }
+    .btn-close { background: #555; }
+    .btn-nav { background: #6c757d; }
+    .btn-danger { background: #dc3545; }
+
+    .image-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+
+    .image-card {
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        width: 180px;
+        background: #fdfdfd;
+    }
+
+    .image-card img {
+        max-width: 100%;
+        border-radius: 6px;
+        margin-bottom: 8px;
+    }
+</style>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <!-- PROPERTY IDENTIFICATION -->
+    <div class="card">
+        <h3>Property Identification</h3>
+        <div class="grid-3">
+            <div>
+                <label>Location</label>
+                {{ form.location }}
+            </div>
+            <div>
+                <label>County</label>
+                {{ form.county }}
+            </div>
+            <div>
+                <label>Access</label>
+                {{ form.access }}
+            </div>
+        </div>
+    </div>
+
+    <!-- SITE DATA -->
+    <div class="card">
+        <h3>Site Data</h3>
+        <div class="grid-4">
+            <div>
+                <label>Size (Acres)</label>
+                {{ form.size }}
+            </div>
+            <div>
+                <label>SQFT</label>
+                {{ form.sqft }}
+            </div>
+            <div>
+                <label>Utilities</label>
+                {{ form.utilities }}
+            </div>
+            <div>
+                <label>Water</label>
+                {{ form.water }}
+            </div>
+        </div>
+    </div>
+
+    <!-- SITE CHARACTERISTICS -->
+    <div class="card">
+        <h3>Site Characteristics</h3>
+        <div class="grid-4">
+            <div>
+                <label>Improvements</label>
+                {{ form.improvements }}
+            </div>
+            <div>
+                <label>Eco</label>
+                {{ form.eco }}
+            </div>
+            <div>
+                <label>Terrain</label>
+                {{ form.terrain }}
+            </div>
+            <div>
+                <label>Restrictions</label>
+                {{ form.restrictions }}
+            </div>
+        </div>
+    </div>
+
+    <!-- SALES DATA -->
+    <div class="card">
+        <h3>Sales Data</h3>
+        <div class="grid-4">
+            <div>
+                <label>Price</label>
+                {{ form.sale_price }}
+            </div>
+            <div>
+                <label>Sale Date</label>
+                {{ form.sale_date }}
+            </div>
+            <div>
+                <label>Grantor</label>
+                {{ form.grantor }}
+            </div>
+            <div>
+                <label>Grantee</label>
+                {{ form.grantee }}
+            </div>
+            <div>
+                <label>Document No.</label>
+                {{ form.bk_pg }}
+            </div>
+            <div>
+                <label>Terms</label>
+                {{ form.terms }}
+            </div>
+            <div>
+                <label>Listing</label>
+                {{ form.listing }}
+            </div>
+            <div>
+                <label>Broker</label>
+                {{ form.broker }}
+            </div>
+        </div>
+    </div>
+
+    <!-- LEGAL / VERIFICATION -->
+    <div class="card">
+        <h3>Legal / Verification</h3>
+        <div class="grid-3">
+            <div>
+                <label>Verified To</label>
+                {{ form.verified_to }}
+            </div>
+            <div>
+                <label>Verified By</label>
+                {{ form.verified_by }}
+            </div>
+            <div>
+                <label>Verified Date</label>
+                {{ form.verified_date }}
+            </div>
+            <div>
+                <label>Inspected By</label>
+                {{ form.inspected_by }}
+            </div>
+            <div>
+                <label>Inspected Date</label>
+                {{ form.inspected_date }}
+            </div>
+            <div>
+                <label>Appraiser Name</label>
+                {{ form.appraiser_name }}
+            </div>
+        </div>
+    </div>
+
+    <!-- COMMENTS -->
+    <div class="card">
+        <h3>Comments</h3>
+        {{ form.comments }}
+    </div>
+
+    <!-- IMAGES -->
+    <div class="card">
+        <h3>Images</h3>
+
+        {{ formset.management_form }}
+
+        <div class="image-row">
+            {% for img_form in formset %}
+                <div class="image-card">
+                    {% if img_form.instance.pk and img_form.instance.image %}
+                        <img src="{{ img_form.instance.image.url }}" alt="Property image">
+                    {% endif %}
+
+                    <label>Image File</label>
+                    {{ img_form.image }}
+
+                    <label>Caption</label>
+                    {{ img_form.caption }}
+
+                    <div>
+                        <label>Delete</label>
+                        {{ img_form.DELETE }}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- BUTTONS -->
+    <div class="btn-row">
+        <button type="submit" class="btn btn-save">Save Property</button>
+
+        <a href="/" class="btn btn-close">Back to Search</a>
+
+        {% if property %}
+            <a href="/comp/{{ property.id }}/" class="btn btn-nav">
+                Use This Property as Comp
+            </a>
+
+            <a href="/property/{{ property.id }}/duplicate/" class="btn btn-nav">
+                Duplicate Property
+            </a>
+
+            <a href="/property/{{ property.id }}/delete/" class="btn btn-danger"
+               onclick="return confirm('Are you sure you want to delete this property? This cannot be undone.');">
+                Delete Property
+            </a>
+        {% endif %}
+    </div>
+
+</form>
+
+{% endblock %}

@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<h2>Property Search</h2>
+
+<style>
+    body { font-family: Arial, sans-serif; margin: 25px; background: #fafafa; }
+
+    table { width: 100%; border-collapse: collapse; background: white; margin-top: 20px; }
+    th, td { padding: 12px; border: 1px solid #ddd; text-align: left; }
+    th { background: #f2f2f2; }
+
+    .selected-box { background: #eef; padding: 10px; border: 1px solid #ccd; border-radius: 6px; margin-bottom: 15px; }
+
+    .select-btn { margin-top: 20px; padding: 10px 20px; background: #0078ff; color: white; border: none; border-radius: 4px; cursor: pointer; text-decoration:none; display:inline-block; }
+
+    .pagination { margin-top: 20px; font-size: 16px; }
+    .pagination a { margin: 0 10px; text-decoration: none; color: #0078ff; }
+
+    .btn-left {
+        background: #6c757d;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        margin-right: 10px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-right {
+        background: #0078ff;
+        color: white;
+        padding: 10px 16px;
+        border-radius: 6px;
+        margin-left: 10px;
+        text-decoration: none;
+        border: none;
+        cursor: pointer;
+    }
+
+    .btn-small {
+        padding: 6px 10px;
+        font-size: 12px;
+        border-radius: 4px;
+        text-decoration: none;
+        color: white;
+    }
+
+    .btn-edit { background: #17a2b8; }
+    .btn-dup { background: #6f42c1; }
+    .btn-del { background: #dc3545; }
+</style>
+
+<!-- CSV EXPORT BUTTONS -->
+<div style="margin-bottom:15px;">
+    <a href="/export/properties/" class="btn-left" style="background:#28a745;">
+        Export All Properties (CSV)
+    </a>
+
+    <a href="/export/comps/" class="btn-left" style="background:#17a2b8;">
+        Export Selected Comps (CSV)
+    </a>
+</div>
+
+<form method="get" action="/">
+
+    <div class="filters" style="padding:20px; border-radius:10px; box-shadow:0 2px 6px rgba(0,0,0,0.08); background:white;">
+
+        <h3 style="margin-top:0; margin-bottom:15px; font-size:20px; color:#333;">Search Filters</h3>
+
+        <div style="
+            display:grid;
+            grid-template-columns: repeat(4, minmax(180px, 1fr));
+            gap:15px 20px;
+            margin-bottom:20px;
+        ">
+
+            <div>
+                <label>Size Min</label>
+                <input type="text" name="size_min" value="{{ request.GET.size_min }}">
+            </div>
+
+            <div>
+                <label>Size Max</label>
+                <input type="text" name="size_max" value="{{ request.GET.size_max }}">
+            </div>
+
+            <div>
+                <label>Price Min</label>
+                <input type="text" name="price_min" value="{{ request.GET.price_min }}">
+            </div>
+
+            <div>
+                <label>Price Max</label>
+                <input type="text" name="price_max" value="{{ request.GET.price_max }}">
+            </div>
+
+            <div>
+                <label>Date Start</label>
+                <input type="date" name="date_start" value="{{ request.GET.date_start }}">
+            </div>
+
+            <div>
+                <label>Date End</label>
+                <input type="date" name="date_end" value="{{ request.GET.date_end }}">
+            </div>
+
+            <div>
+                <label>Location</label>
+                <input type="text" name="location" value="{{ request.GET.location }}">
+            </div>
+
+            <div>
+                <label>Access</label>
+                <input type="text" name="access" value="{{ request.GET.access }}">
+            </div>
+
+            <div>
+                <label>County</label>
+                <input type="text" name="county" value="{{ request.GET.county }}">
+            </div>
+
+            <div>
+                <label>Sort By</label>
+                <select name="sort">
+                    <option value="sale_date" {% if sort == "sale_date" %}selected{% endif %}>Sale Date ↑</option>
+                    <option value="-sale_date" {% if sort == "-sale_date" %}selected{% endif %}>Sale Date ↓</option>
+                    <option value="sale_price" {% if sort == "sale_price" %}selected{% endif %}>Price ↑</option>
+                    <option value="-sale_price" {% if sort == "-sale_price" %}selected{% endif %}>Price ↓</option>
+                    <option value="size" {% if sort == "size" %}selected{% endif %}>Size ↑</option>
+                    <option value="-size" {% if sort == "-size" %}selected{% endif %}>Size ↓</option>
+                    <option value="location" {% if sort == "location" %}selected{% endif %}>Location ↑</option>
+                    <option value="-location" {% if sort == "-location" %}selected{% endif %}>Location ↓</option>
+                </select>
+            </div>
+
+        </div>
+
+        {% for sid in selected_ids %}
+            <input type="hidden" name="selected_ids" value="{{ sid }}">
+        {% endfor %}
+
+        <div style="display:flex; justify-content:space-between; margin-top:10px;">
+
+            <div>
+                <button type="submit" name="show_selected_only" value="1" class="btn-left">
+                    Show Selected Only
+                </button>
+
+                <a href="/?clear_all=1" class="btn-left">
+                    Clear Selected Parcels
+                </a>
+            </div>
+
+            <div>
+                <button type="submit" class="btn-right">
+                    Search
+                </button>
+
+                <a href="/?{% for sid in selected_ids %}selected_ids={{ sid }}&{% endfor %}" class="btn-right">
+                    Reset Search
+                </a>
+            </div>
+
+        </div>
+
+    </div>
+
+    <h3>{{ total_results }} Results Found</h3>
+
+    {% if selected_ids %}
+    <div class="selected-box">
+        <strong>Selected Parcels:</strong>
+        {% for sid in selected_ids %}
+            <span>ID {{ sid }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <table>
+        <tr>
+            <th>Select</th>
+            <th>ID</th>
+            <th>Location</th>
+            <th>Access</th>
+            <th>County</th>
+            <th>Sale Date</th>
+            <th>Price</th>
+            <th>Size (Acres)</th>
+            <th>Actions</th>
+        </tr>
+
+        {% for p in page_obj %}
+        <tr>
+            <td>
+                <input type="checkbox" name="selected_ids" value="{{ p.id }}"
+                       onchange="this.form.submit()"
+                       {% if p.id in selected_ids %}checked{% endif %}>
+            </td>
+            <td>{{ p.id }}</td>
+            <td>{{ p.location }}</td>
+            <td>{{ p.access }}</td>
+            <td>{{ p.county }}</td>
+            <td>{{ p.sale_date }}</td>
+            <td>${{ p.sale_price }}</td>
+            <td>{{ p.size }}</td>
+
+            <td>
+                <a href="/property/{{ p.id }}/edit/" class="btn-small btn-edit">Edit</a>
+                <a href="/property/{{ p.id }}/duplicate/" class="btn-small btn-dup">Duplicate</a>
+                <a href="/property/{{ p.id }}/delete/" class="btn-small btn-del"
+                   onclick="return confirm('Delete this property?');">
+                    Delete
+                </a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <button class="select-btn" type="submit" formaction="/comp/start/">Open Selected in Forms</button>
+
+    <div class="pagination">
+        {% with params=request.GET.urlencode|cut:"page="|cut:"&page=" %}
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}&{{ params }}">Previous</a>
+            {% endif %}
+
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&{{ params }}">Next</a>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+</form>
+
+{% endblock %}

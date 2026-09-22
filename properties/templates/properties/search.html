@@ -1,0 +1,287 @@
+{% extends "base.html" %}
+{% block content %}
+
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        background: #f7f9fc;
+        margin: 25px;
+    }
+
+    /* HEADER */
+    .page-header h2 {
+        font-size: 28px;
+        font-weight: 700;
+        margin-bottom: 6px;
+        color: #2c3e50;
+    }
+    .page-header p {
+        color: #6c757d;
+        font-size: 15px;
+        margin-bottom: 25px;
+    }
+
+    /* EXPORT BUTTONS */
+    .export-bar {
+        margin-bottom: 20px;
+        display: flex;
+        gap: 10px;
+    }
+
+    .btn {
+        border-radius: 30px;
+        padding: 10px 20px;
+        font-weight: 500;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+        transition: all .2s ease;
+        text-decoration: none;
+        color: white;
+        display: inline-block;
+    }
+    .btn:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 10px rgba(0,0,0,0.12);
+    }
+
+    .btn-green { background: #28a745; }
+    .btn-teal { background: #17a2b8; }
+    .btn-blue { background: #0078ff; }
+    .btn-gray { background: #6c757d; }
+
+    /* FILTER CARD */
+    .filters {
+        background: #ffffff;
+        padding: 28px;
+        border-radius: 14px;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+        border: 1px solid #e7e9ef;
+        margin-bottom: 30px;
+    }
+    .filters h3 {
+        font-size: 20px;
+        margin-bottom: 20px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #f0f2f7;
+        color: #2c3e50;
+    }
+
+    .grid-4 {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(180px, 1fr));
+        gap: 18px;
+    }
+
+    input, select {
+        border-radius: 8px;
+        border: 1px solid #d5d9e2;
+        padding: 10px;
+        font-size: 14px;
+        width: 100%;
+        background: #fff;
+    }
+    input:focus, select:focus {
+        border-color: #0078ff;
+        box-shadow: 0 0 0 3px rgba(0,120,255,0.15);
+        outline: none;
+    }
+
+    /* TABLE */
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        background: #fff;
+        margin-top: 20px;
+    }
+    th {
+        background: #f7f9fc;
+        font-weight: 600;
+        color: #333;
+        padding: 12px;
+        border-bottom: 1px solid #eef0f5;
+    }
+    td {
+        padding: 12px;
+        border-bottom: 1px solid #eef0f5;
+        font-size: 14px;
+    }
+
+    /* CLICKABLE ROWS */
+    .clickable-row {
+        cursor: pointer;
+        transition: background .15s ease;
+    }
+    .clickable-row:hover td {
+        background: #e8f0ff !important;
+    }
+
+    /* BADGES */
+    .badge {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: 500;
+        color: white;
+    }
+    .badge-blue { background: #0078ff; }
+    .badge-gray { background: #6c757d; }
+
+    /* SELECTED BOX */
+    .selected-box {
+        background: #eef6ff;
+        padding: 12px;
+        border-radius: 10px;
+        border: 1px solid #ccd;
+        margin-bottom: 15px;
+    }
+
+    /* PAGINATION */
+    .pagination {
+        margin-top: 20px;
+        font-size: 16px;
+    }
+    .pagination a {
+        margin: 0 10px;
+        text-decoration: none;
+        color: #0078ff;
+    }
+
+    /* OPEN SELECTED BUTTON */
+    .select-btn {
+        margin-top: 20px;
+        padding: 12px 22px;
+        background: #0078ff;
+        color: white;
+        border-radius: 30px;
+        cursor: pointer;
+        text-decoration:none;
+        display:inline-block;
+        font-weight: 500;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.08);
+    }
+</style>
+
+<div class="page-header">
+    <h2>Property Search</h2>
+    <p>Find parcels, comps, and land records quickly.</p>
+</div>
+
+<!-- EXPORT BUTTONS -->
+<div class="export-bar">
+    <a href="/export/properties/" class="btn btn-green">Export All Properties (CSV)</a>
+    <a href="/export/comps/" class="btn btn-teal">Export Selected Comps (CSV)</a>
+</div>
+
+<form method="get" action="/">
+
+    <div class="filters">
+        <h3>Search Filters</h3>
+
+        <div class="grid-4">
+            <div><label>Size Min</label><input type="text" name="size_min" value="{{ request.GET.size_min }}"></div>
+            <div><label>Size Max</label><input type="text" name="size_max" value="{{ request.GET.size_max }}"></div>
+            <div><label>Price Min</label><input type="text" name="price_min" value="{{ request.GET.price_min }}"></div>
+            <div><label>Price Max</label><input type="text" name="price_max" value="{{ request.GET.price_max }}"></div>
+            <div><label>Date Start</label><input type="date" name="date_start" value="{{ request.GET.date_start }}"></div>
+            <div><label>Date End</label><input type="date" name="date_end" value="{{ request.GET.date_end }}"></div>
+            <div><label>Location</label><input type="text" name="location" value="{{ request.GET.location }}"></div>
+            <div><label>Access</label><input type="text" name="access" value="{{ request.GET.access }}"></div>
+            <div><label>County</label><input type="text" name="county" value="{{ request.GET.county }}"></div>
+            <div>
+                <label>Sort By</label>
+                <select name="sort">
+                    <option value="sale_date" {% if sort == "sale_date" %}selected{% endif %}>Sale Date ↑</option>
+                    <option value="-sale_date" {% if sort == "-sale_date" %}selected{% endif %}>Sale Date ↓</option>
+                    <option value="sale_price" {% if sort == "sale_price" %}selected{% endif %}>Price ↑</option>
+                    <option value="-sale_price" {% if sort == "-sale_price" %}selected{% endif %}>Price ↓</option>
+                    <option value="size" {% if sort == "size" %}selected{% endif %}>Size ↑</option>
+                    <option value="-size" {% if sort == "-size" %}selected{% endif %}>Size ↓</option>
+                    <option value="location" {% if sort == "location" %}selected{% endif %}>Location ↑</option>
+                    <option value="-location" {% if sort == "-location" %}selected{% endif %}>Location ↓</option>
+                </select>
+            </div>
+        </div>
+
+        {% for sid in selected_ids %}
+            <input type="hidden" name="selected_ids" value="{{ sid }}">
+        {% endfor %}
+
+        <div style="display:flex; justify-content:space-between; margin-top:20px;">
+            <div>
+                <button type="submit" name="show_selected_only" value="1" class="btn btn-gray">Show Selected Only</button>
+                <a href="/?clear_all=1" class="btn btn-gray">Clear Selected Parcels</a>
+            </div>
+
+            <div>
+                <button type="submit" class="btn btn-blue">Search</button>
+                <a href="/?{% for sid in selected_ids %}selected_ids={{ sid }}&{% endfor %}" class="btn btn-blue">Reset Search</a>
+            </div>
+        </div>
+    </div>
+
+    <h3>{{ total_results }} Results Found</h3>
+
+    {% if selected_ids %}
+    <div class="selected-box">
+        <strong>Selected Parcels:</strong>
+        {% for sid in selected_ids %}
+            <span>ID {{ sid }}</span>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <table>
+        <tr>
+            <th>Select</th>
+            <th>ID</th>
+            <th>Location</th>
+            <th>Access</th>
+            <th>County</th>
+            <th>Sale Date</th>
+            <th>Price</th>
+            <th>Size (Acres)</th>
+        </tr>
+
+        {% for p in page_obj %}
+        <tr class="clickable-row" onclick="window.open('/property/{{ p.id }}/edit/', '_blank')">
+
+            <!-- Checkbox cell should NOT trigger row click -->
+            <td onclick="event.stopPropagation();">
+                <input type="checkbox" name="selected_ids" value="{{ p.id }}"
+                       onchange="this.form.submit()"
+                       {% if p.id in selected_ids %}checked{% endif %}>
+            </td>
+
+            <td>{{ p.id }}</td>
+            <td>{{ p.location }}</td>
+            <td><span class="badge badge-gray">{{ p.access }}</span></td>
+            <td><span class="badge badge-blue">{{ p.county }}</span></td>
+            <td>{{ p.sale_date }}</td>
+            <td>${{ p.sale_price }}</td>
+            <td>{{ p.size }}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+
+    <button class="select-btn" type="submit" formaction="/comp/start/">Open Selected in Forms</button>
+
+    <div class="pagination">
+        {% with params=request.GET.urlencode|cut:"page="|cut:"&page=" %}
+            {% if page_obj.has_previous %}
+                <a href="?page={{ page_obj.previous_page_number }}&{{ params }}">Previous</a>
+            {% endif %}
+
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+
+            {% if page_obj.has_next %}
+                <a href="?page={{ page_obj.next_page_number }}&{{ params }}">Next</a>
+            {% endif %}
+        {% endwith %}
+    </div>
+
+</form>
+
+{% endblock %}

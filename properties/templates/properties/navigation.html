@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<style>
+    body {
+        background: #f5f6f8;
+    }
+
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 240px;
+        height: 100vh;
+        background: #1f1f1f;
+        color: #fff;
+        padding: 30px 20px;
+        display: flex;
+        flex-direction: column;
+        box-shadow: 4px 0 14px rgba(0,0,0,0.15);
+    }
+
+    .sidebar h2 {
+        font-size: 1.6rem;
+        font-weight: 700;
+        margin-bottom: 40px;
+        letter-spacing: -0.5px;
+    }
+
+    .nav-link {
+        color: #dcdcdc;
+        text-decoration: none;
+        padding: 12px 10px;
+        border-radius: 8px;
+        font-size: 1rem;
+        display: block;
+        margin-bottom: 8px;
+        transition: all .25s ease;
+    }
+
+    .nav-link:hover {
+        background: #2c2c2c;
+        color: #fff;
+        transform: translateX(4px);
+    }
+
+    .main-content {
+        margin-left: 260px;
+        padding: 40px;
+        display: flex;
+        justify-content: center;      /* centers horizontally */
+        align-items: center;          /* centers vertically */
+        min-height: 100vh;            /* makes centering work */
+        text-align: center;           /* centers text */
+    }
+
+    .welcome-card {
+        background: #fff;
+        padding: 40px;
+        border-radius: 14px;
+        box-shadow: 0 4px 14px rgba(0,0,0,0.08);
+        max-width: 800px;             /* keeps it tight and centered */
+    }
+
+    .welcome-card h1 {
+        font-size: 2.2rem;
+        font-weight: 700;
+        margin-bottom: 20px;
+    }
+
+    .welcome-card p {
+        font-size: 1.1rem;
+        color: #555;
+        line-height: 1.6;
+    }
+</style>
+
+<div class="sidebar">
+    <h2>Appraisal Console</h2>
+
+    <a href="{% url 'property_search' %}" class="nav-link">Search Properties</a>
+    <a href="{% url 'property_new' %}" class="nav-link">Add New Property</a>
+    <a href="{% url 'comp_start' %}" class="nav-link">Comp Editor</a>
+    <a href="{% url 'property_records' %}" class="nav-link">Database Records</a>
+    <a href="{% url 'property_recycle_bin' %}" class="nav-link">Recycle Bin</a>
+    <a href="{% url 'export_properties_csv' %}" class="nav-link">Reports & Exports</a>
+    <a href="#" class="nav-link">System Settings</a>
+</div>
+
+<div class="main-content">
+    <div class="welcome-card">
+        <h1>Welcome to the Hippauf Dry & Conelly Land Valuation Portal</h1>
+        <p>
+            New Mexico’s premier commercial real estate appraisal firm for over 50 years, 
+            providing expert valuation services for commercial, rural, agricultural, and ranch properties. 
+            Our team specializes in the appraisal of conservation easements and complex land assets.
+        </p>
+    </div>
+</div>
+
+{% endblock %}
